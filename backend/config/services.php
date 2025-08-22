@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    // TMDB configuration
+    'tmdb' => [
+        'token' => env('TMDB_TOKEN'),
+        'base_url' => env('TMDB_BASE_URL', 'https://api.themoviedb.org/3'),
+        'language' => env('TMDB_LANGUAGE', 'pt-BR'),
+        'cache_ttl' => (int) env('TMDB_CACHE_TTL', 600),
+    ],
+
 ];

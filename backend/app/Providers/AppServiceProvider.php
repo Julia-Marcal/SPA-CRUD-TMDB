@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Contracts\MovieProviderInterface;
+use App\Factories\MovieProviderFactory;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +13,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(MovieProviderInterface::class, function ($app) {
+            $config = config('services.tmdb');
+            return MovieProviderFactory::make($config);
+        });
     }
 
     /**
