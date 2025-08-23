@@ -1,11 +1,72 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { useAuthStore } from '@/stores/auth'
+import Toast from 'primevue/toast'
+
+const authStore = useAuthStore()
+
+onMounted(() => {
+  authStore.initializeAuth()
+})
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <div id="app">
+    <RouterView />
+    <Toast />
+  </div>
 </template>
 
-<style scoped></style>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: #1a1a2e;
+  color: #ffffff;
+  line-height: 1.6;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+:root {
+  --primary-color: #667eea;
+  --primary-color-text: #ffffff;
+  --surface-ground: #1a1a2e;
+  --surface-section: #2a2a3e;
+  --surface-card: #2a2a3e;
+  --surface-overlay: #3a3a4e;
+  --surface-border: #4a4a5e;
+  --surface-hover: #3a3a4e;
+  --text-color: #ffffff;
+  --text-color-secondary: #a0a0b0;
+  --primary-color-hover: #5a6fd8;
+}
+
+.w-full {
+  width: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #2a2a3e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4a4a5e;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5a5a6e;
+}
+</style>
