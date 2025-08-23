@@ -1,4 +1,5 @@
-.login-container {
+.login-container,
+.register-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -20,6 +21,17 @@
 .login-header {
   text-align: center;
   margin-bottom: 32px;
+}
+
+.login-button:disabled,
+.login-button[disabled] {
+  background: linear-gradient(135deg, #4a4a5e 0%, #3a3a4e 100%);
+  color: #ccccd6;
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
+  filter: saturate(0.4);
+  transition: none;
 }
 
 .login-header h1 {
@@ -81,16 +93,14 @@
   text-decoration: underline;
 }
 
-.login-button {
+.login-button,
+
+.register-button {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border: none;
   height: 48px;
   font-size: 16px;
   font-weight: 600;
-}
-
-.login-button:hover {
-  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
 }
 
 .login-footer {

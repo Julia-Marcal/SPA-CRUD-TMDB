@@ -40,6 +40,7 @@
           label="Entrar"
           class="w-full login-button"
           :loading="authStore.isLoading"
+          :disabled="authStore.isLoading || !form.email || !form.password"
         />
       </form>
 
@@ -56,11 +57,10 @@ import { useRouter } from 'vue-router'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
 import Button from 'primevue/button'
-import Checkbox from 'primevue/checkbox'
 import { useAuthStore } from '@/stores/auth'
 import { useApiError } from '@/composables/UseApiError'
 import { useNotifications } from '@/composables/UseNotifications'
-import { useFormValidation, commonRules } from '@/composables/UseFormValidation'
+import { useFormValidation } from '@/composables/UseFormValidation'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -72,6 +72,17 @@ const form = reactive({
   password: '',
   remember: false
 })
+
+const commonRules = {
+  email: [
+    { required: true, message: 'Email é obrigatório' },
+    { pattern: /^\S+@\S+\.\S+$/, message: 'Email inválido' }
+  ],
+  password: [
+    { required: true, message: 'Senha é obrigatória' },
+    { minLength: 8, message: 'A senha deve ter pelo menos 8 caracteres' }
+  ]
+}
 
 const validationRules = {
   email: commonRules.email,
@@ -102,7 +113,7 @@ const handleFieldBlur = (fieldName: string, value: any) => {
 }
 
 const goToRegister = () => {
-  console.log('Navigate to registration')
+  router.push('/register')
 }
 </script>
 

@@ -1,21 +1,5 @@
 import apiClient from './api'
-import type { User } from '@/stores/auth'
-
-export interface LoginCredentials {
-  email: string
-  password: string
-}
-
-export interface RegisterCredentials extends LoginCredentials {
-  name: string
-  last_name: string
-  age: number
-}
-
-export interface AuthResponse {
-  token: string
-  user: User
-}
+import type { LoginCredentials, RegisterCredentials, AuthResponse } from '@/types/auth'
 
 export const authService = {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
