@@ -14,8 +14,6 @@ class JwtAuthController extends Controller
     {
         $user = User::create([
             'name' => $body['name'],
-            'last_name' => $body['last_name'],
-            'age' => $body['age'],
             'email' => $body['email'],
             'password' => Hash::make($body['password']),
         ]);
@@ -40,7 +38,6 @@ class JwtAuthController extends Controller
                 'user' => [
                     'id' => $user->id,
                     'name' => $user->name,
-                    'last_name' => $user->last_name,
                     'email' => $user->email,
                     'age' => $user->age,
                 ],
