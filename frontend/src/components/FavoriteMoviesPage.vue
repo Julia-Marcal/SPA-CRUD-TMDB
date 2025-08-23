@@ -38,7 +38,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { moviesService } from '../services/moviesService'
-import { type Movie, type Genre, type FavoriteMovie } from '../types/movies'
+import { type Movie, type Genre } from '../types/movies'
 import MovieCard from './ui/MovieCard.vue'
 import PlaceholderCard from './ui/PlaceholderCard.vue'
 import Button from 'primevue/button'
@@ -48,8 +48,8 @@ import 'primeicons/primeicons.css'
 const router = useRouter()
 
 const loading = ref(false)
-const allMovies = ref<FavoriteMovie[]>([])
-const filteredMovies = ref<FavoriteMovie[]>([])
+const allMovies = ref<Movie[]>([])
+const filteredMovies = ref<Movie[]>([])
 const allGenres = ref<Genre[]>([])
 const selectedGenre = ref<Genre | null>(null)
 
@@ -74,7 +74,7 @@ const fetchFavoriteMovies = async () => {
 const filterMovies = () => {
   if (selectedGenre.value && selectedGenre.value.id !== 0) {
     filteredMovies.value = allMovies.value.filter((movie) =>
-      movie.genres.some((genre) => genre.id === selectedGenre.value?.id)
+      (movie.genres ?? []).some((genre) => genre.id === selectedGenre.value?.id)
     )
   } else {
     filteredMovies.value = allMovies.value

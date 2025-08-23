@@ -7,12 +7,13 @@ export interface Movie {
   release_date: string
   vote_average: number
   vote_count: number
-  genre_ids: number[]
+  genre_ids?: number[] | null
   adult: boolean
   video: boolean
   popularity: number
   media_type?: string
   is_favorite?: boolean
+  genres?: Genre[]
 }
 
 export interface MovieDetail extends Movie {
@@ -28,14 +29,7 @@ export interface MovieDetail extends Movie {
   is_favorite?: boolean
 }
 
-export interface FavoriteMovie {
-  id: number
-  user_id: number
-  movie_id: number
-  movie: MovieDetail
-  created_at: string
-  updated_at: string
-}
+export type FavoriteMovie = Movie
 
 export interface FavoriteMoviesResponse {
   movies: FavoriteMovie[]

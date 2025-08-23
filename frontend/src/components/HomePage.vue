@@ -13,11 +13,11 @@
             aria-haspopup="true" aria-controls="userMenuPopup" />
           <Menu ref="userMenu" id="userMenuPopup" :model="userMenuItems" :popup="true" class="user-dropdown">
             <template #item="{ item, props }">
-              <a v-bind="props.action" @click="item.command && item.command()" class="p-menuitem-link"
+                <a v-bind="props.action" class="p-menuitem-link"
                 style="margin:.75rem;display:flex;align-items:center;gap:.5rem;padding:.6rem .85rem;border:1px solid var(--surface-border);border-radius:.6rem;background:var(--surface-card);box-shadow:0 2px 6px rgba(0,0,0,.08);transition:.15s; font-weight:500;">
                 <i :class="item.icon" />
                 <span class="p-menuitem-text">{{ item.label }}</span>
-              </a>
+                </a>
             </template>
           </Menu>
         </div>
@@ -124,7 +124,6 @@ const categories = ref<Category[]>([])
 const genres = ref<Genre[]>([])
 const featuredMovies = ref<Movie[]>([])
 const favoriteMovies = ref<FavoriteMovie[]>([])
-const favoriteGenres = ref<Genre[]>([])
 const loading = ref(false)
 const authStore = useAuthStore()
 let debounceTimer: number
@@ -190,11 +189,7 @@ const loadCategories = async () => {
 const loadFavoriteMovies = async () => {
   try {
     const response = await moviesService.getFavoriteMovies()
-
-    if (response && response.movies) {
-      favoriteMovies.value = response.movies
-      favoriteGenres.value = response.genres
-    }
+    favoriteMovies.value = response.movies
   } catch (error) {
     console.error('Failed to load favorite movies:', error)
   }
