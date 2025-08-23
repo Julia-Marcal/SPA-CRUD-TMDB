@@ -20,8 +20,6 @@ class JWTAuthService
     {
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'age' => ['required', 'integer'],
             'email' => ['required', 'string', 'max:255', 'email', 'unique:users'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);

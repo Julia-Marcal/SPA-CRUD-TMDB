@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -20,8 +21,6 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $fillable = [
         'name',
-        'last_name',
-        'age',
         'email',
         'password',
     ];
@@ -66,5 +65,13 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    /**
+     * Get the favorite movies for the user.
+     */
+    public function favoriteMovies(): HasMany
+    {
+        return $this->hasMany(UserFavoriteMovie::class);
     }
 }
