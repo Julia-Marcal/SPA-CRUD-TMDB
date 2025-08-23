@@ -11,7 +11,12 @@
       </div>
     </div>
     <div class="movie-info">
-      <h4 class="movie-title">{{ movie.title }}</h4>
+       <div class="movie-header-row">
+        <h4 class="movie-title">{{ movie.title }}</h4>
+        <span class="favorite-icon">
+          <i :class="movie.is_favorite ? 'pi pi-heart-fill' : 'pi pi-heart'"></i>
+        </span>
+      </div>
       <div class="movie-meta">
         <span class="movie-year">{{ formattedReleaseDate }}</span>
         <span class="movie-rating">
@@ -27,7 +32,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import Button from 'primevue/button'
-import type { Movie, Genre } from '@/services/moviesService'
+import type { Movie, Genre } from '@/types/movies'
 import useMovieUtils from '@/composables/UseMovieUtils'
 
 interface Props {
@@ -37,14 +42,14 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const emit = defineEmits<{
-  click: [movie: Movie]
-  play: [movie: Movie]
-}>()
-
 const { getPosterUrl, formatReleaseDate, formatVoteAverage } = useMovieUtils()
 
-const posterUrl = computed(() => getPosterUrl(props.movie.poster_path))
+const posterUrl = computed(() => {
+  if (!props.movie.poster_path) {
+    return 'https://via.placeholder.com/500x750.png?text=No+Image'
+  }
+  return getPosterUrl(props.movie.poster_path)
+})
 
 const formattedReleaseDate = computed(() => formatReleaseDate(props.movie.release_date))
 
@@ -60,6 +65,6 @@ const formattedGenres = computed(() => {
 })
 </script>
 
-<style>
+<style scoped>
 @import '../../assets/styles/movieCard.css';
 </style>

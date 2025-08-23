@@ -1,72 +1,13 @@
 import apiClient from './api'
-
-export interface Movie {
-  id: number
-  title: string
-  overview: string
-  poster_path: string
-  backdrop_path: string
-  release_date: string
-  vote_average: number
-  vote_count: number
-  genre_ids: number[]
-  adult: boolean
-  video: boolean
-  popularity: number
-  media_type?: string
-}
-
-export interface MovieDetail extends Movie {
-  genres: Genre[]
-  runtime: number
-  status: string
-  tagline: string
-  budget: number
-  revenue: number
-  production_companies: ProductionCompany[]
-  spoken_languages: SpokenLanguage[]
-  production_countries: ProductionCountry[]
-}
-
-export interface Genre {
-  id: number
-  name: string
-}
-
-export interface ProductionCompany {
-  id: number
-  name: string
-  logo_path: string | null
-  origin_country: string
-}
-
-export interface SpokenLanguage {
-  english_name: string
-  iso_639_1: string
-  name: string
-}
-
-export interface ProductionCountry {
-  iso_3166_1: string
-  name: string
-}
-
-export interface SearchParams {
-  query: string
-  page?: number
-  include_adult?: boolean
-}
-
-export interface SearchResponse {
-  page: number
-  results: Movie[]
-  total_pages: number
-  total_results: number
-}
-
-export interface ApiResponse<T> {
-  data: T
-}
+import type {
+  Movie,
+  MovieDetail,
+  FavoriteMoviesResponse,
+  Genre,
+  SearchParams,
+  SearchResponse,
+  ApiResponse
+} from '@/types/movies'
 
 class MoviesService {
   async searchMovies(params: SearchParams): Promise<SearchResponse> {
@@ -86,8 +27,26 @@ class MoviesService {
     return response.data.data
   }
 
-  async getMovie(movieId: number): Promise<MovieDetail> {
-    const response = await apiClient.get<ApiResponse<MovieDetail>>(`/movies/${movieId}`)
+  async getMovieDetails(id: number): Promise<MovieDetail> {
+    const response = await apiClient.get<ApiResponse<MovieDetail>>(`/movies/${id}`)
+    return response.data.data
+  }
+
+  async getFavoriteMovies(): Promise<FavoriteMoviesResponse> {
+    const response = await apiClient.get<ApiResponse<FavoriteMoviesResponse>>('/movies/favorites')
+    return response.data.data
+  }
+
+  async addFavoriteMovie(movieId: number): Promise<void> {
+    await apiClient.post(`/movies/favorites/${movieId}`)
+  }
+
+  async removeFavoriteMovie(movieId: number): Promise<void> {
+    await apiClient.delete(`/movies/favorites/${movieId}`)
+  }
+
+  async getMoviesByGenre(genreId: number): Promise<Movie[]> {
+    const response = await apiClient.get<ApiResponse<Movie[]>>(`/movies/genre/${genreId}`)
     return response.data.data
   }
 }
