@@ -76,10 +76,13 @@ class HttpClient implements HttpClientInterface
         }
     }
 
-    public function post(string $endpoint, array $data = []): array
+    public function post(string $endpoint, array $queryParams = [], array $data = []): array
     {
         try {
-            $response = $this->client->post($endpoint, [
+            $fullUrl = $this->baseUrl . '/' . ltrim($endpoint, '/');
+
+            $response = $this->client->post($fullUrl, [
+                'query' => $queryParams,
                 'json' => $data,
             ]);
 

@@ -56,7 +56,7 @@ class TMDBService implements TMDBServiceInterface
 
         return Cache::remember($cacheKey, $this->cacheTtl, function () {
             try {
-                $response = $this->httpClient->get('/genre/movie/list', [
+                $response  = $this->httpClient->get('/genre/movie/list', [
                     'language' => $this->language,
                 ]);
 
@@ -118,6 +118,34 @@ class TMDBService implements TMDBServiceInterface
             } catch (TMDBException $e) {
                 Log::error('Failed to get movie', [
                     'movie_id' => $movieId,
+                    'error' => $e->getMessage(),
+                ]);
+                throw $e;
+            }
+        });
+    }
+
+    public function getMovieByGenre(int $genreId): array
+    {
+        $cacheKey = "tmdb_movie_genre_{$genreId}";
+
+        return Cache::remember($cacheKey, $this->cacheTtl, function () use ($genreId) {
+            try {
+                $response = $this->httpClient->get("discover/movie?with_genres=${genreId}", [
+                    'language' => $this->language,
+                ]);
+
+                $movies = [];
+                if (isset($response['results']) && is_array($response['results'])) {
+                    foreach ($response['results'] as $movie) {
+                        $movies[] = MovieDTO::fromArray($movie);
+                    }
+                }
+
+                return $movies;
+            } catch (TMDBException $e) {
+                Log::error('Failed to get movie', [
+                    'movie_genre_id' => $genreId,
                     'error' => $e->getMessage(),
                 ]);
                 throw $e;

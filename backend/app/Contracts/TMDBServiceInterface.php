@@ -2,7 +2,6 @@
 
 namespace App\Contracts;
 
-use App\DTOs\GenreDTO;
 use App\DTOs\MovieDTO;
 use App\DTOs\MovieSearchResponseDTO;
 
@@ -16,4 +15,6 @@ interface TMDBServiceInterface
     public function getTrendingMovies(): array;
 
     public function getMovie(int $movieId): MovieDTO;
+
+    public function getMovieByGenre(int $genreId): array;
 }

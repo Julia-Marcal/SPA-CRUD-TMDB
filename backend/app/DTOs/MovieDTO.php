@@ -4,6 +4,10 @@ namespace App\DTOs;
 
 class MovieDTO
 {
+    /**
+     * @param array<int, int>|null $genre_ids
+     * @param array<int, GenreDTO> $genres
+     */
     public function __construct(
         public readonly int $id,
         public readonly string $title,
@@ -18,11 +22,18 @@ class MovieDTO
         public readonly ?string $original_title,
         public readonly ?bool $adult,
         public readonly ?bool $video,
-        public readonly ?float $popularity
-    ) {}
+        public readonly ?float $popularity,
+        public readonly array $genres = []
+    ) {
+    }
 
     public static function fromArray(array $data): self
     {
+        $genres = [];
+        if (!empty($data['genres'])) {
+            $genres = array_map(fn ($genre) => GenreDTO::fromArray($genre), $data['genres']);
+        }
+
         return new self(
             id: $data['id'] ?? 0,
             title: $data['title'] ?? '',
@@ -37,7 +48,8 @@ class MovieDTO
             original_title: $data['original_title'] ?? null,
             adult: $data['adult'] ?? null,
             video: $data['video'] ?? null,
-            popularity: $data['popularity'] ?? null
+            popularity: $data['popularity'] ?? null,
+            genres: $genres
         );
     }
 
@@ -58,6 +70,7 @@ class MovieDTO
             'adult' => $this->adult,
             'video' => $this->video,
             'popularity' => $this->popularity,
+            'genres' => array_map(fn (GenreDTO $genre) => $genre->toArray(), $this->genres),
         ];
     }
 }
