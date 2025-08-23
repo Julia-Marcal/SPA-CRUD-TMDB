@@ -35,9 +35,17 @@ class JwtAuthController extends Controller
 
             $user = Auth::user();
 
-            $token = JWTAuth::claims(['role' => $user->role])->fromUser($user);
-
-            return response()->json(compact('token'));
+            return response()->json([
+                'token' => $token,
+                'user' => [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'last_name' => $user->last_name,
+                    'email' => $user->email,
+                    'age' => $user->age,
+                ],
+                'error' => false
+            ]);
         } catch (JWTException $e) {
             return response()->json(['error' => 'Could not create token'], 500);
         }
