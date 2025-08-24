@@ -12,6 +12,11 @@ services:
       - DB_PASSWORD=${DB_PASSWORD:-movies_password}
     networks:
       - app-network
+    depends_on:
+      redis:
+        condition: service_healthy
+      db:
+        condition: service_started
 
   nginx_frontend:
     build:
@@ -55,8 +60,25 @@ services:
       - app-network
     command: --default-authentication-plugin=mysql_native_password
 
+  redis:
+    image: redis:7-alpine
+    container_name: redis_cache
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    networks:
+      - app-network
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
 volumes:
   dbdata:
+  redisdata:
 
 networks:
   app-network:

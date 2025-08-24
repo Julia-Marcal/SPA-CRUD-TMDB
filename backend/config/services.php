@@ -14,6 +14,14 @@ return [
     |
     */
 
+    'tmdb' => [
+        'base_url' => env('TMDB_BASE_URL', 'https://api.themoviedb.org/3'),
+        'bearer_token' => env('TMDB_BEARER_TOKEN'),
+        'language' => env('TMDB_LANGUAGE', 'pt-BR'),
+        'timeout' => env('TMDB_TIMEOUT', 30),
+        'cache_ttl' => env('TMDB_CACHE_TTL', 3600), // 1 hour default
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],

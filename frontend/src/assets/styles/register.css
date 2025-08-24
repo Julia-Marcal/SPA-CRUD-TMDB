@@ -1,0 +1,46 @@
+.register-card {
+  background: #2a2a3e;
+  border-radius: 16px;
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid #3a3a4e;
+}
+
+.register-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.register-header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.register-button {
+  margin-top: 1rem;
+}
+
+.register-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+
+.register-footer a {
+  text-decoration: none;
+  font-weight: 600;
+}

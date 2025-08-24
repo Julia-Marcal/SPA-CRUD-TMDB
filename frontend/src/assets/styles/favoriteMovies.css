@@ -1,0 +1,48 @@
+.main-content {
+  margin-top: 2rem;
+}
+
+.no-results {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 1.2rem;
+}
+
+.movies-list-container .header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.genre-filter {
+  margin-left: auto;
+}
+
+.genre-dropdown {
+  background-color: #1a1a2e;
+  color: #ffffff;
+  border: 1px solid #4a5568;
+  border-radius: 8px;
+  padding: 0.25rem 0.5rem;
+  min-width: 120px;
+}
+
+.genre-dropdown .p-dropdown-label {
+  color: #ffffff;
+}
+
+.genre-dropdown .p-dropdown-trigger {
+  color: #ffffff;
+}
+
+.genre-dropdown-panel {
+  background-color: #2a2a3e !important;
+  border-radius: 8px;
+}
+
+.genre-dropdown-panel .p-dropdown-item {
+  color: #e2e8f0;
+  padding: 1rem;
+  transition: background-color 0.2s, color 0.2s;
+}
