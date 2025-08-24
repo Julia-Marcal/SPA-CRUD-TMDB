@@ -153,7 +153,7 @@ const toggleUserMenu = (event: Event) => {
 }
 
 const selectCategory = (category: Category) => {
-  router.push({ name: 'search', query: { genre: category.id.toString() } })
+  router.push({ name: 'genre', params: { id: category.id } })
 }
 
 const loadTrendingMovies = async () => {
@@ -189,7 +189,7 @@ const loadCategories = async () => {
 const loadFavoriteMovies = async () => {
   try {
     const response = await moviesService.getFavoriteMovies()
-    favoriteMovies.value = response.movies
+    favoriteMovies.value = response.movies.slice(0, 3)
   } catch (error) {
     console.error('Failed to load favorite movies:', error)
   }
