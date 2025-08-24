@@ -33,12 +33,14 @@ Uma Single Page Application (SPA) para gerenciar uma lista de filmes favoritos, 
 
 ## ● Tecnologias
 
--   **Backend:** Laravel (PHP)
--   **Frontend:** Vue.js
--   **Banco de Dados:** MySQL
--   **Containerização:** Docker
-
----
+| Camada | Tecnologia | Por que / Uso Principal |
+|--------|------------|--------------------------|
+| Backend | Laravel | API REST, migrations, validação, autenticação JWT |
+| Frontend | Vue.js + Vite | SPA reativa, hot reload rápido |
+| Banco de Dados | MySQL | Persistência relacional dos usuários e favoritos |
+| Cache / Otimização | Redis | Cache de respostas externas (TMDB) e apoio a tokens/contagem |
+| Containerização | Docker | Padronização do ambiente (PHP, Nginx, MySQL, Redis) |
+| Autenticação | JWT (JSON Web Token) | Sessões stateless entre frontend e API |
 
 ## ● Como Rodar o Projeto Localmente (Docker)
 
