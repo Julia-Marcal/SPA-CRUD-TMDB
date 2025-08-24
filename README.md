@@ -1,8 +1,6 @@
 # SPA-CRUD-TMDB
 
-Esta é uma Single Page Application (SPA) para gerenciar uma lista de filmes favoritos, utilizando a API do The Movie Database (TMDB). O backend é construído com Laravel e o frontend com Vue.js.
-
-A aplicação permite que os usuários naveguem por filmes, adicionem-nos a uma lista pessoal de favoritos e gerenciem sua conta de usuário.
+Uma Single Page Application (SPA) para gerenciar uma lista de filmes favoritos, utilizando a API do The Movie Database (TMDB).
 
 ## Preview
 
@@ -10,124 +8,151 @@ A aplicação permite que os usuários naveguem por filmes, adicionem-nos a uma 
 
 ---
 
-## ● Como rodar o projeto localmente com Docker
+## Índice
 
-Este passo a passo descreve como subir o ambiente de desenvolvimento completo utilizando Docker.
-
-1.  **Clone o repositório:**
-    ```bash
-    git clone https://github.com/Julia-Marcal/SPA-CRUD-TMDB.git
-    cd SPA-CRUD-TMDB
-    ```
-
-2.  **Configure o arquivo de ambiente do backend:**
-    O backend precisa de um arquivo `.env` com as credenciais e a chave da API.
-    ```bash
-    cd backend
-    cp .env.example .env
-    ```
-
-3.  **Obtenha e configure a chave da API do TMDB:**
-    A aplicação requer uma chave da API do The Movie Database (TMDB) para funcionar.
-    - **Crie uma conta:** Acesse o site oficial [The Movie Database (TMDB)](https://www.themoviedb.org) e crie uma conta gratuita.
-    - **Gere sua chave:** No painel da sua conta, vá em "Configurações" > "API" e solicite uma chave de API (v3 auth).
-    - **Adicione a chave ao projeto:** Abra o arquivo `backend/.env` e insira sua chave na variável `TMDB_API_KEY`.
-      ```
-      TMDB_API_KEY=SUA_CHAVE_DA_API_AQUI
-      ```
-
-4.  **Suba os contêineres Docker:**
-    Volte para a raiz do projeto e execute o comando para construir e iniciar os serviços.
-    ```bash
-    # Na raiz do projeto
-    docker-compose up -d --build
-    ```
-
-5.  **Gere a chave da aplicação Laravel:**
-    Este comando é essencial para a segurança da aplicação.
-    ```bash
-    docker-compose exec backend php artisan key:generate
-    ```
-
-6.  **Acesse a interface web:**
-    Após alguns instantes, a aplicação estará disponível:
-    -   **Frontend:** `http://localhost:5174`
-    -   **Backend API:** `http://localhost:8080`
+- [Funcionalidades](#-funcionalidades)
+- [Tecnologias](#-tecnologias)
+- [Como Rodar o Projeto Localmente (Docker)](#-como-rodar-o-projeto-localmente-docker)
+  - [1. Clonar o Repositório](#1-clonar-o-repositório)
+  - [2. Configurar o Ambiente do Backend](#2-configurar-o-ambiente-do-backend)
+  - [3. Subir os Contêineres](#3-subir-os-contêineres)
+  - [4. Instalar Dependências e Gerar Chaves](#4-instalar-dependências-e-gerar-chaves)
+  - [5. Configurar o Banco de Dados](#5-configurar-o-banco-de-dados)
+  - [6. Acessar a Aplicação](#6-acessar-a-aplicação)
+- [Como Testar a Aplicação](#-como-testar-a-aplicação)
+- [Estrutura do Projeto (CRUD)](#-estrutura-do-projeto-crud)
+- [Alternativo: Rodar o Frontend Separadamente](#-alternativo-rodar-o-frontend-separadamente)
 
 ---
 
-## ● Como importar o banco de dados
+## ● Funcionalidades
 
-Você pode configurar o banco de dados de duas maneiras:
+-   Navegar por uma lista de filmes populares.
+-   Adicionar e remover filmes de uma lista de favoritos pessoal.
+-   Gerenciar contas de usuário (login/cadastro).
 
-### Método 1: Importando o Dump SQL (Recomendado)
+## ● Tecnologias
 
-Esta é a forma mais rápida de ter um ambiente com dados de exemplo.
+-   **Backend:** Laravel (PHP)
+-   **Frontend:** Vue.js
+-   **Banco de Dados:** MySQL
+-   **Containerização:** Docker
 
-1.  **Encontre o nome do contêiner MySQL:**
-    ```bash
-    docker ps | grep mysql
+---
+
+## ● Como Rodar o Projeto Localmente (Docker)
+
+Este guia descreve como configurar o ambiente de desenvolvimento completo com Docker.
+
+### 1. Clonar o Repositório
+```bash
+git clone https://github.com/Julia-Marcal/SPA-CRUD-TMDB.git
+cd SPA-CRUD-TMDB
+```
+
+### 2. Configurar o Ambiente do Backend
+
+O backend precisa de um arquivo `.env` com as credenciais e a chave da API do TMDB.
+
+**a. Copie o arquivo de exemplo:**
+```bash
+cd backend
+cp .env.example .env
+```
+
+**b. Obtenha e configure a chave da API do TMDB:**
+A aplicação requer uma chave da API do [The Movie Database (TMDB)](https://www.themoviedb.org) para funcionar.
+
+-   **Crie uma conta:** Acesse o site e crie uma conta gratuita.
+-   **Gere sua chave:** No painel da sua conta, vá em **Configurações > API** e solicite uma chave (v3 auth).
+-   **Adicione a chave ao projeto:** Abra o arquivo `backend/.env` e insira sua chave na variável `TMDB_API_KEY`.
+    ```env
+    TMDB_API_KEY=SUA_CHAVE_DA_API_AQUI
     ```
-    O nome será algo como `spa-crud-tmdb-mysql-1`.
 
-2.  **Importe os arquivos `.sql` (linha de comando):**  
-  Execute os comandos abaixo na raiz do projeto, substituindo `<container_name>` pelo nome do seu contêiner MySQL (ex.: `spa-crud-tmdb-mysql-1`). A senha padrão é `root`.
-  ```bash
-  # Importar tabela de usuários
-  docker exec -i <container_name> mysql -u root -proot spa_crud_tmdb < sql/movies_users.sql
+### 3. Subir os Contêineres
 
-  # Importar tabela de filmes favoritos
-  docker exec -i <container_name> mysql -u root -proot spa_crud_tmdb < sql/movies_user_favorite_movies.sql
-  ```
+Volte para a raiz do projeto e execute o comando para construir e iniciar os serviços.
+```bash
+# Na raiz do projeto
+docker-compose up -d --build
+```
 
-3.  **Verifique se os dados foram importados:**
-  ```bash
-  docker exec -it <container_name> mysql -u root -proot -e "USE spa_crud_tmdb; SHOW TABLES; SELECT COUNT(*) FROM movies_users; SELECT COUNT(*) FROM movies_user_favorite_movies;"
-  ```
+### 4. Instalar Dependências e Gerar Chaves
 
-### Método 2: Importando pelo MySQL Workbench (Alternativo)
+Com os contêineres em execução, execute os seguintes comandos para finalizar a configuração do Laravel.
 
-1. Abra o MySQL Workbench.
-2. Conecte-se ao servidor:
-   - Host: 127.0.0.1  
-   - Porta: (verifique no docker-compose, normalmente 3306)  
-   - Usuário: movies_user  
-  3. (Opcional) Criar as tabelas via migrations do Laravel (caso não importe os arquivos .sql):
-  ```bash
-  docker-compose exec backend php artisan migrate
-  ```
-   Isso cria automaticamente as tabelas no schema spa_crud_tmdb conforme definido nas migrations.
+**a. Instalar dependências do Composer:**
+```bash
+docker-compose exec backend composer install
+```
 
-4. Opção A (Data Import):
-   - Menu: Server > Data Import.
-   - Selecione "Import from Self-Contained File".
-   - Aponte primeiro para `sql/movies_users.sql`.
-   - Marque “Default Target Schema” = `spa_crud_tmdb`.
-   - Clique em "Start Import".
-   - Repita para `sql/movies_user_favorite_movies.sql`.
-5. Opção B (Executando scripts manualmente):
-   - Abra cada arquivo (`movies_users.sql` e `movies_user_favorite_movies.sql`) em uma aba (File > Open SQL Script).
-   - Certifique-se de que o schema `spa_crud_tmdb` está selecionado (duplo clique no schema).
-   - Execute (botão raio).
-6. Confirme:
-   ```sql
-   USE spa_crud_tmdb;
-   SHOW TABLES;
-   SELECT COUNT(*) FROM movies_users;
-   SELECT COUNT(*) FROM movies_user_favorite_movies;
-   ```
-7. Caso veja erros de chave duplicada, limpe antes:
-   ```sql
-   TRUNCATE TABLE movies_user_favorite_movies;
-   TRUNCATE TABLE movies_users;
-   ```
+**b. Gerar a chave da aplicação:**
+```bash
+docker-compose exec backend php artisan key:generate
+```
 
-Pronto: banco preenchido para uso local.
+**c. Gerar o segredo JWT para autenticação:**
+```bash
+docker-compose exec backend php artisan jwt:secret
+```
+*(Se já existir um valor, o comando perguntará antes de substituir.)*
+
+### 5. Configurar o Banco de Dados
+
+Você pode popular o banco de dados de duas maneiras:
+
+#### Método 1: Usando Migrations (Recomendado)
+Este comando criará todas as tabelas necessárias.
+```bash
+docker-compose exec backend php artisan migrate
+```
+
+#### Método 2: Importando Dados de Exemplo (Dump SQL)
+Se desejar um ambiente com usuários e favoritos pré-cadastrados, importe os arquivos `.sql`.
+
+**a. Encontre o nome do contêiner MySQL:**
+```bash
+docker ps | grep mysql
+```
+O nome será algo como `spa-crud-tmdb-mysql-1`.
+
+**b. Importe os arquivos (substitua `<container_name>`):**
+```bash
+# Importar tabela de usuários
+docker exec -i <container_name> mysql -u root -proot spa_crud_tmdb < sql/movies_users.sql
+
+# Importar tabela de filmes favoritos
+docker exec -i <container_name> mysql -u root -proot spa_crud_tmdb < sql/movies_user_favorite_movies.sql
+```
+
+### 6. Acessar a Aplicação
+
+A aplicação estará disponível nos seguintes endereços:
+-   **Frontend:** `http://localhost:5174`
+-   **Backend API:** `http://localhost:8080`
+
+---
+
+## ● Como Testar a Aplicação
+
+### 1. Acesso à Interface
+-   Abra o navegador e acesse `http://localhost:5174`.
+-   Use um dos logins de teste:
+    -   **Email:** `test@example.com` | **Senha:** `password`
+    -   **Email:** `jooj3068@gmail.com` | **Senha:** `senhaaaa123`
+    -   **Email:** `mu.540@example.com` | **Senha:** `senha123`
+    -   **Email:** `usuario@example.com` | **Senha:** `senha_forte123`
+
+### 2. Testes da API (Postman)
+Para testar os endpoints da API, você pode usar a coleção do Postman disponível no link abaixo. Ela contém todas as rotas da aplicação, incluindo autenticação, gerenciamento de usuários e filmes.
+
+-   [Acessar a Coleção do Postman](https://lively-satellite-334979.postman.co/workspace/SPA-CRUD-TMDB~21eba3c6-1bb1-436e-ab83-c4f30f63afc5/collection/25406751-4fcfe6bb-1a1c-42a9-8931-ec2d86c89327?action=share&creator=25406751)
 
 
 ---
 
-## ● Indicação de onde está implementado o CRUD
+## ● Estrutura do Projeto (CRUD)
 
 A lógica da aplicação está dividida entre o backend (Laravel) e o frontend (Vue.js).
 
@@ -145,33 +170,7 @@ A lógica da aplicação está dividida entre o backend (Laravel) e o frontend (
 
 ---
 
-## ● Instruções sobre como testar a aplicação
-1.  **Acesso à Interface:**
-  - Abra o navegador e acesse `http://localhost:5174`.
-  - Use um dos logins de teste:
-    - Email: `test@example.com` | Senha: `password`
-    - Email: `jooj3068@gmail.com` | Senha: `senhaaaa123`
-    - Email: `mu.540@example.com` | Senha: `senha123`
-    - Email: `usuario@example.com` | Senha: `senha_forte123`
-
-2.  **Testes Automatizados (Backend):**
-    Para rodar a suíte de testes do Laravel (PHPUnit), execute o comando:
-    ```bash
-    docker-compose exec backend php artisan test
-    ```
-
----
-
-## ● Link para obter a chave da API do TMDB
-
-Para que a aplicação funcione, é obrigatório o uso de uma chave de API do The Movie Database (TMDB).
-
--   **Link para o site oficial:** [The Movie Database (TMDB)](https://www.themoviedb.org)
--   **Instruções:** Crie uma conta, faça login e acesse a seção "Configurações" do seu perfil. No menu "API", você poderá gerar uma chave de API (v3 auth).
-
----
-
-## ● Como subir o frontend separado
+## ● Alternativo: Rodar o Frontend Separadamente
 
 Se preferir rodar o frontend (Vue.js) de forma independente do Docker:
 
@@ -185,10 +184,10 @@ Se preferir rodar o frontend (Vue.js) de forma independente do Docker:
     npm install
     ```
 
-3.  **Execute a aplicação em modo de desenvolvimento:**
+3.  **Execute em modo de desenvolvimento:**
     ```bash
     npm run dev
     ```
-    A aplicação estará disponível em `http://localhost:5173` (ou outra porta, caso a 5173 esteja ocupada).
+    A aplicação estará disponível em `http://localhost:5173`.
 
-**Importante:** Para que o frontend funcione, o backend (rodando via Docker) deve estar em execução, pois a interface faz chamadas para a API em `http://localhost:8080`.
+**Importante:** Para que o frontend funcione, o backend (rodando via Docker) deve estar em execução para servir a API em `http://localhost:8080`.
