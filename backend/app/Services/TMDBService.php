@@ -131,7 +131,8 @@ class TMDBService implements TMDBServiceInterface
 
         return Cache::remember($cacheKey, $this->cacheTtl, function () use ($genreId) {
             try {
-                $response = $this->httpClient->get("discover/movie?with_genres=${genreId}", [
+                $response = $this->httpClient->get('/discover/movie', [
+                    'with_genres' => $genreId,
                     'language' => $this->language,
                 ]);
 
@@ -144,8 +145,8 @@ class TMDBService implements TMDBServiceInterface
 
                 return $movies;
             } catch (TMDBException $e) {
-                Log::error('Failed to get movie', [
-                    'movie_genre_id' => $genreId,
+                Log::error('Failed to get movies by genre', [
+                    'genre_id' => $genreId,
                     'error' => $e->getMessage(),
                 ]);
                 throw $e;
