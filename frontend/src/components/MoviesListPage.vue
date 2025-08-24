@@ -77,30 +77,30 @@ const pageTitle = computed(() => {
 const fetchData = async () => {
   loading.value = true
   try {
-    const genresDataPromise = moviesService.getMovieGenres()
+    const genresData = await moviesService.getMovieGenres()
+    genres.value = genresData
 
-    let moviesDataPromise
+    let moviesData: Movie[] = []
     if (isSearch.value) {
       const genreIds = route.query.genre as string
       if (genreIds) {
         const genreId = parseInt(genreIds.split(',')[0], 10)
-        moviesDataPromise = moviesService.getMoviesByGenre(genreId)
+        moviesData = await moviesService.getMoviesByGenre(genreId)
       } else if (searchQuery.value) {
-        moviesDataPromise = moviesService
-          .searchMovies({ query: searchQuery.value as string, page: 1 })
-          .then((res) => res.results)
+        const response = await moviesService.searchMovies({
+          query: searchQuery.value as string,
+          page: 1
+        })
+        moviesData = response.results
       } else {
-        moviesDataPromise = moviesService.getTrendingMovies()
+        moviesData = await moviesService.getTrendingMovies()
       }
     } else if (isGenre.value) {
       const genreId = parseInt(route.params.id as string)
-      moviesDataPromise = moviesService.getMoviesByGenre(genreId)
+      moviesData = await moviesService.getMoviesByGenre(genreId)
     } else {
-      moviesDataPromise = moviesService.getTrendingMovies()
+      moviesData = await moviesService.getTrendingMovies()
     }
-
-    const [genresData, moviesData] = await Promise.all([genresDataPromise, moviesDataPromise])
-    genres.value = genresData
     movies.value = moviesData
   } catch (error) {
     console.error('Failed to fetch movies:', error)
